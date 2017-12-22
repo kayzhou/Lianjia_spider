@@ -132,7 +132,7 @@ def get_house(url, out_name):
         try:
             value = eval(value)
         except:
-            print('解析失败 ...')
+            # print('解析失败 ...')
             continue
         data[key] = value
 
