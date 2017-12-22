@@ -124,7 +124,7 @@ def get_house(url, out_name):
         value = t[t.find(':') + 1:-1].replace('true', 'True').replace('false', 'False')
         if value == '':
             continue
-        print(value)
+        # print(value)
         if value == "'true'":
             value = 'True'
         elif value == "'false'":
@@ -150,8 +150,6 @@ for i in range(2, 10000):
     for house in my_houses:
         url = house.find('a').get('href')
         print(url)
-        if url in url_pool:
-            continue
         time.sleep(1)
         _id = url.split('/')[-1][:-5]
         if not os.path.exists('data/{}.json'.format(_id)):
