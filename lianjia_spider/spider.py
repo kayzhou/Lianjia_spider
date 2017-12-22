@@ -1,10 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
+import os
 import re
 import json
 import time
 
-p = re.compile('<[^>]+>') 
+p = re.compile('<[^>]+>')
 
 def get_house(url, out_name):
     soup = BeautifulSoup(requests.get(url).text, "lxml")
@@ -81,7 +82,7 @@ def get_house(url, out_name):
         name = box.find('span').string
         data[box.find('span').string] = box.get_text()[len(name):]
 
-        
+
     # html body div.m-content div.box-l div.newwrap.baseinform div.introContent.showbasemore
     # html body div.m-content div.box-l div.newwrap.baseinform div.introContent.showbasemore div.baseattribute.clear
 
@@ -138,7 +139,6 @@ def get_house(url, out_name):
     json.dump(data, open(out_name, 'w'), indent=2, ensure_ascii=False)
 
 
-url_pool = set([])
 
 for i in range(2, 10000):
     home = requests.get("https://bj.lianjia.com/ershoufang/pg{}".format(i)).text
@@ -146,7 +146,7 @@ for i in range(2, 10000):
 
     # html body div.content div.leftContent ul.sellListContent li.clear div.info.clear div.title a
     my_houses = home.body.find('div', 'content').find('div', 'leftContent').find('ul', 'sellListContent').find_all('li', 'clear')
-    
+
     for house in my_houses:
         url = house.find('a').get('href')
         print(url)
@@ -154,5 +154,5 @@ for i in range(2, 10000):
             continue
         time.sleep(1)
         _id = url.split('/')[-1][:-5]
-        get_house(url, 'data/{}.json'.format(_id))
-        url_pool.add(url)
+        if not os.path.exists('data/{}.json'.format(_id)):
+            get_house(url, 'data/{}.json'.format(_id))
