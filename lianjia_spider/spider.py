@@ -153,4 +153,7 @@ for i in range(2, 10000):
         time.sleep(1)
         _id = url.split('/')[-1][:-5]
         if not os.path.exists('data/{}.json'.format(_id)):
-            get_house(url, 'data/{}.json'.format(_id))
+            try:
+                get_house(url, 'data/{}.json'.format(_id))
+            except:
+                print('Error ->', url)
