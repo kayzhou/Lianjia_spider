@@ -139,7 +139,7 @@ def get_house(url, out_name):
     json.dump(data, open(out_name, 'w'), indent=2, ensure_ascii=False)
 
 
-
+url_set = set([])
 for i in range(2, 10000):
     home = requests.get("https://bj.lianjia.com/ershoufang/pg{}".format(i)).text
     home = BeautifulSoup(home, "lxml")
@@ -149,11 +149,14 @@ for i in range(2, 10000):
 
     for house in my_houses:
         url = house.find('a').get('href')
+        _id = url.split('/')[-1][:-5]
+        out_name = 'data/{}.json'.format(_id)
+        if url in url_set or os.path.exists(out_name):
+            continue
         print(url)
         time.sleep(1)
-        _id = url.split('/')[-1][:-5]
-        if not os.path.exists('data/{}.json'.format(_id)):
-            try:
-                get_house(url, 'data/{}.json'.format(_id))
-            except:
-                print('Error ->', url)
+        try:
+            get_house(url, 'data/{}.json'.format(_id))
+        except:
+            print('Error ->', url)
+        url_set.add(url)
