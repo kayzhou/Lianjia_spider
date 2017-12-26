@@ -166,3 +166,6 @@ while True:
             except:
                 print('Error ->', url)
             url_set.add(url)
+        time.sleep(10)
+
+    time.sleep(10 * 60)
