@@ -140,23 +140,29 @@ def get_house(url, out_name):
 
 
 url_set = set([])
-for i in range(2, 10000):
-    home = requests.get("https://bj.lianjia.com/ershoufang/pg{}".format(i)).text
-    home = BeautifulSoup(home, "lxml")
+while True:
+    for i in range(2, 1000):
+        print('page ->', i)
+        home = requests.get("https://bj.lianjia.com/ershoufang/pg{}".format(i)).text
+        home = BeautifulSoup(home, "lxml")
 
-    # html body div.content div.leftContent ul.sellListContent li.clear div.info.clear div.title a
-    my_houses = home.body.find('div', 'content').find('div', 'leftContent').find('ul', 'sellListContent').find_all('li', 'clear')
-
-    for house in my_houses:
-        url = house.find('a').get('href')
-        _id = url.split('/')[-1][:-5]
-        out_name = 'data/{}.json'.format(_id)
-        if url in url_set or os.path.exists(out_name):
-            continue
-        print(url)
-        time.sleep(1)
+        # html body div.content div.leftContent ul.sellListContent li.clear div.info.clear div.title a
         try:
-            get_house(url, 'data/{}.json'.format(_id))
+            my_houses = home.body.find('div', 'content').find('div', 'leftContent').find('ul', 'sellListContent').find_all('li', 'clear')
         except:
-            print('Error ->', url)
-        url_set.add(url)
+            print('Error -> my houses', 'page ->', i)
+            continue
+
+        for house in my_houses:
+            url = house.find('a').get('href')
+            _id = url.split('/')[-1][:-5]
+            out_name = 'data/{}.json'.format(_id)
+            if url in url_set or os.path.exists(out_name):
+                continue
+            print(url)
+            time.sleep(1)
+            try:
+                get_house(url, 'data/{}.json'.format(_id))
+            except:
+                print('Error ->', url)
+            url_set.add(url)
