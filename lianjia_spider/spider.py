@@ -140,10 +140,11 @@ def get_house(url, out_name):
 
 
 url_set = set([])
-while True:
-    for i in range(2, 1000):
-        print('page ->', i)
-        home = requests.get("https://bj.lianjia.com/ershoufang/pg{}".format(i)).text
+for j in range(1, 9):
+    for i in range(2, 500):
+        home_url = "https://bj.lianjia.com/ershoufang/a{}p{}".format(j, i)
+        print('home url ->', home_url)
+        home = requests.get(home_url).text
         home = BeautifulSoup(home, "lxml")
 
         # html body div.content div.leftContent ul.sellListContent li.clear div.info.clear div.title a
@@ -166,6 +167,6 @@ while True:
             except:
                 print('Error ->', url)
             url_set.add(url)
-        time.sleep(10)
+        time.sleep(2)
 
-    time.sleep(10 * 60)
+    time.sleep(5 * 60)
