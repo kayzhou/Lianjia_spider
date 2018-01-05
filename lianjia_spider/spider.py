@@ -141,7 +141,7 @@ def get_house(url, out_name):
 
 url_set = set([])
 for j in range(1, 9):
-    for i in range(2, 500):
+    for i in range(2, 1000):
         home_url = "https://bj.lianjia.com/ershoufang/a{}p{}".format(j, i)
         print('home url ->', home_url)
         home = requests.get(home_url).text
