@@ -136,6 +136,8 @@ def get_house(url, out_name):
             continue
         data[key] = value
 
+    print(data)
+    exit()
     json.dump(data, open(out_name, 'w'), indent=2, ensure_ascii=False)
 
 
